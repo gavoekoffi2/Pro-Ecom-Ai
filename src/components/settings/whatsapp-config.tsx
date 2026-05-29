@@ -343,7 +343,7 @@ export function WhatsAppConfig() {
             <div className="space-y-2">
               <Label className="text-slate-300">Phone Number ID</Label>
               <Input
-                placeholder="e.g. 100234567890123"
+                placeholder="ex. 100234567890123"
                 value={phoneNumberId}
                 onChange={(e) => setPhoneNumberId(e.target.value)}
                 className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-500"
@@ -353,7 +353,7 @@ export function WhatsAppConfig() {
             <div className="space-y-2">
               <Label className="text-slate-300">WhatsApp Business Account ID</Label>
               <Input
-                placeholder="e.g. 100234567890456"
+                placeholder="ex. 100234567890456"
                 value={wabaId}
                 onChange={(e) => setWabaId(e.target.value)}
                 className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-500"

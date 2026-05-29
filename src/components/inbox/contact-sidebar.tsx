@@ -115,7 +115,7 @@ export function ContactSidebar({ contact }: ContactSidebarProps) {
   if (!contact) {
     return (
       <div className="flex h-full w-70 items-center justify-center border-l border-slate-800 bg-slate-900">
-        <p className="text-sm text-slate-500">Select a conversation</p>
+        <p className="text-sm text-slate-500">Sélectionnez une conversation</p>
       </div>
     );
   }
@@ -182,7 +182,7 @@ export function ContactSidebar({ contact }: ContactSidebarProps) {
             </div>
             <div className="mt-2 flex flex-wrap gap-1">
               {tags.length === 0 ? (
-                <p className="px-1 text-xs text-slate-600">No tags</p>
+                <p className="px-1 text-xs text-slate-600">Aucune étiquette</p>
               ) : (
                 tags.map((tag) => (
                   <span
@@ -255,7 +255,7 @@ export function ContactSidebar({ contact }: ContactSidebarProps) {
                 <textarea
                   value={newNote}
                   onChange={(e) => setNewNote(e.target.value)}
-                  placeholder="Add a note..."
+                  placeholder="Ajouter une note…"
                   rows={2}
                   className="flex-1 resize-none rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-xs text-white placeholder-slate-500 outline-none focus:border-primary/50"
                 />
