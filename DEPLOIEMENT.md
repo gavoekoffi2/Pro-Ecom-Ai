@@ -21,10 +21,12 @@ sont des comptes et des clés qui vous appartiennent) :
    - `Project URL` → `NEXT_PUBLIC_SUPABASE_URL`
    - `anon public` → `NEXT_PUBLIC_SUPABASE_ANON_KEY`
    - `service_role` (secret) → `SUPABASE_SERVICE_ROLE_KEY`
-3. **Créez les tables** : ouvrez **SQL Editor**, puis exécutez le contenu de
-   chaque fichier du dossier [`supabase/migrations/`](./supabase/migrations)
-   **dans l'ordre des numéros** (001, 002, … 013). Copier-coller-Run pour
-   chacun.
+3. **Créez les tables** : ouvrez **SQL Editor**, collez **tout** le contenu du
+   fichier [`supabase/all-migrations.sql`](./supabase/all-migrations.sql) et
+   cliquez sur **RUN** — il crée toutes les tables d'un seul coup.
+   *(Alternative : exécuter chaque fichier de
+   [`supabase/migrations/`](./supabase/migrations) dans l'ordre des numéros
+   001 → 013.)*
 4. **Stockage des avatars** : la migration `008` crée le bucket de stockage.
    Vérifiez dans **Storage** qu'un bucket `avatars` existe.
 5. **Authentification** : dans **Authentication → URL Configuration**, mettez
