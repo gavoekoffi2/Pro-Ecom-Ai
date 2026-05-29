@@ -94,39 +94,39 @@ export function PipelineAnalytics({ stages, deals }: PipelineAnalyticsProps) {
       <div className="grid grid-cols-2 gap-3 rounded-xl border border-slate-800 bg-slate-900/60 p-4 sm:grid-cols-3 xl:grid-cols-6">
         <Metric
           icon={<BarChart3 className="h-4 w-4 text-slate-400" />}
-          label="Total Deals"
+          label="Total des affaires"
           value={String(stats.totalCount)}
-          tooltip="Count of every deal in this pipeline that isn't marked as Lost. Won deals are still included."
+          tooltip="Nombre d'affaires de ce pipeline non marquées « Perdu ». Les affaires gagnées sont incluses."
         />
         <Metric
           icon={<DollarSign className="h-4 w-4 text-primary" />}
-          label="Pipeline Value"
+          label="Valeur du pipeline"
           value={formatCurrency(stats.totalValue)}
-          tooltip="Sum of the dollar values of all deals in this pipeline, excluding deals marked as Lost."
+          tooltip="Somme des montants de toutes les affaires de ce pipeline, hors affaires marquées « Perdu »."
         />
         <Metric
           icon={<Target className="h-4 w-4 text-blue-400" />}
-          label="Avg Deal Size"
+          label="Valeur moyenne"
           value={formatCurrency(stats.avgValue)}
-          tooltip="Pipeline Value divided by Total Deals — the average value of a single non-lost deal."
+          tooltip="Valeur du pipeline divisée par le total des affaires — la valeur moyenne d'une affaire non perdue."
         />
         <Metric
           icon={<TrendingUp className="h-4 w-4 text-purple-400" />}
-          label="Weighted Value"
+          label="Valeur pondérée"
           value={formatCurrency(stats.weightedValue)}
-          tooltip="Expected revenue: each open deal's value × its stage probability. First stage ≈ 10%, stages progress up to 90%, Won = 100%. Lost deals are excluded."
+          tooltip="Revenu attendu : la valeur de chaque affaire ouverte × la probabilité de son étape. Première étape ≈ 10 %, progression jusqu'à 90 %, Gagné = 100 %. Les affaires perdues sont exclues."
         />
         <Metric
           icon={<Trophy className="h-4 w-4 text-primary" />}
-          label="Won This Month"
+          label="Gagnées ce mois"
           value={String(stats.wonThisMonth)}
-          tooltip="Deals marked as Won since the first day of the current month."
+          tooltip="Affaires marquées « Gagné » depuis le premier jour du mois en cours."
         />
         <Metric
           icon={<XCircle className="h-4 w-4 text-red-400" />}
-          label="Lost This Month"
+          label="Perdues ce mois"
           value={String(stats.lostThisMonth)}
-          tooltip="Deals marked as Lost since the first day of the current month."
+          tooltip="Affaires marquées « Perdu » depuis le premier jour du mois en cours."
         />
       </div>
     </TooltipProvider>

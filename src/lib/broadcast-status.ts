@@ -22,51 +22,51 @@ export interface StatusDisplay {
 
 export const broadcastStatusConfig: Record<BroadcastStatus, StatusDisplay> = {
   draft: {
-    label: "Draft",
+    label: "Brouillon",
     classes: "bg-slate-500/10 text-slate-400 border-slate-500/20",
   },
   scheduled: {
-    label: "Scheduled",
+    label: "Programmée",
     classes: "bg-blue-500/10 text-blue-400 border-blue-500/20",
   },
   sending: {
-    label: "Sending",
+    label: "En cours d'envoi",
     classes: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
     pulse: true,
   },
   sent: {
-    label: "Sent",
+    label: "Envoyée",
     classes: "bg-primary/10 text-primary border-primary/20",
   },
   failed: {
-    label: "Failed",
+    label: "Échec",
     classes: "bg-red-500/10 text-red-400 border-red-500/20",
   },
 };
 
 export const recipientStatusConfig: Record<RecipientStatus, StatusDisplay> = {
   pending: {
-    label: "Pending",
+    label: "En attente",
     classes: "bg-slate-500/10 text-slate-400 border-slate-500/20",
   },
   sent: {
-    label: "Sent",
+    label: "Envoyé",
     classes: "bg-blue-500/10 text-blue-400 border-blue-500/20",
   },
   delivered: {
-    label: "Delivered",
+    label: "Livré",
     classes: "bg-primary/10 text-primary border-primary/20",
   },
   read: {
-    label: "Read",
+    label: "Lu",
     classes: "bg-primary/10 text-primary border-primary/20",
   },
   replied: {
-    label: "Replied",
+    label: "Répondu",
     classes: "bg-purple-500/10 text-purple-400 border-purple-500/20",
   },
   failed: {
-    label: "Failed",
+    label: "Échec",
     classes: "bg-red-500/10 text-red-400 border-red-500/20",
   },
 };

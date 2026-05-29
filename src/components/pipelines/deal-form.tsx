@@ -149,7 +149,7 @@ export function DealForm({
 
   async function handleSave() {
     if (!title.trim() || !contactId || !stageId) {
-      toast.error("Title, contact, and stage are required");
+      toast.error("Le titre, le contact et l'étape sont requis");
       return;
     }
     setSaving(true);
@@ -172,7 +172,7 @@ export function DealForm({
         .update(payload)
         .eq("id", deal.id);
       if (error) {
-        toast.error("Failed to save deal");
+        toast.error("Échec de l'enregistrement de l'affaire");
         setSaving(false);
         return;
       }
@@ -182,7 +182,7 @@ export function DealForm({
       } = await supabase.auth.getSession();
       const user = session?.user;
       if (!user) {
-        toast.error("Not signed in");
+        toast.error("Non connecté");
         setSaving(false);
         return;
       }
@@ -190,14 +190,14 @@ export function DealForm({
         .from("deals")
         .insert({ ...payload, user_id: user.id, status: "open" });
       if (error) {
-        toast.error("Failed to create deal");
+        toast.error("Échec de la création de l'affaire");
         setSaving(false);
         return;
       }
     }
 
     setSaving(false);
-    toast.success(deal ? "Deal updated" : "Deal created");
+    toast.success(deal ? "Affaire mise à jour" : "Affaire créée");
     onOpenChange(false);
     onSaved();
   }
@@ -211,11 +211,11 @@ export function DealForm({
       .eq("id", deal.id);
     setStatusAction(null);
     if (error) {
-      toast.error("Failed to update deal status");
+      toast.error("Échec de la mise à jour du statut");
       return;
     }
     toast.success(
-      status === "won" ? "Marked as won" : status === "lost" ? "Marked as lost" : "Deal reopened",
+      status === "won" ? "Marquée gagnée" : status === "lost" ? "Marquée perdue" : "Affaire rouverte",
     );
     onOpenChange(false);
     onSaved();
@@ -227,10 +227,10 @@ export function DealForm({
     const { error } = await supabase.from("deals").delete().eq("id", deal.id);
     setDeleting(false);
     if (error) {
-      toast.error("Failed to delete deal");
+      toast.error("Échec de la suppression de l'affaire");
       return;
     }
-    toast.success("Deal deleted");
+    toast.success("Affaire supprimée");
     setConfirmDelete(false);
     onOpenChange(false);
     onSaved();
@@ -245,17 +245,17 @@ export function DealForm({
         <div className="flex h-full flex-col">
           <SheetHeader className="border-b border-slate-700/50 p-4">
             <SheetTitle className="text-white">
-              {deal ? "Edit Deal" : "New Deal"}
+              {deal ? "Modifier l'affaire" : "Nouvelle affaire"}
             </SheetTitle>
           </SheetHeader>
 
           <div className="flex-1 overflow-y-auto p-4 space-y-4">
             <div className="grid gap-2">
-              <Label className="text-slate-300">Title</Label>
+              <Label className="text-slate-300">Titre</Label>
               <Input
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder="Deal title"
+                placeholder="Titre de l'affaire"
                 className="border-slate-700 bg-slate-800 text-white"
               />
             </div>
@@ -267,7 +267,7 @@ export function DealForm({
                 onChange={(e) => setContactId(e.target.value)}
                 className="h-9 w-full rounded-lg border border-slate-700 bg-slate-800 px-2.5 text-sm text-white outline-none focus:border-primary focus:ring-1 focus:ring-primary"
               >
-                <option value="">Select a contact</option>
+                <option value="">Sélectionner un contact</option>
                 {contacts.map((c) => (
                   <option key={c.id} value={c.id}>
                     {c.name || c.phone}
@@ -281,7 +281,7 @@ export function DealForm({
                   className="mt-1 inline-flex items-center gap-1.5 self-start rounded-md bg-primary/10 px-2 py-1 text-xs text-primary hover:bg-primary/20"
                 >
                   <MessageSquare className="h-3 w-3" />
-                  Link to Conversation
+                  Lier à une conversation
                 </Link>
               )}
             </div>
@@ -317,7 +317,7 @@ export function DealForm({
             </div>
 
             <div className="grid gap-2">
-              <Label className="text-slate-300">Expected Close Date</Label>
+              <Label className="text-slate-300">Date de clôture prévue</Label>
               <Input
                 type="date"
                 value={expectedCloseDate}
@@ -327,7 +327,7 @@ export function DealForm({
             </div>
 
             <div className="grid gap-2">
-              <Label className="text-slate-300">Stage</Label>
+              <Label className="text-slate-300">Étape</Label>
               <select
                 value={stageId}
                 onChange={(e) => setStageId(e.target.value)}
@@ -342,13 +342,13 @@ export function DealForm({
             </div>
 
             <div className="grid gap-2">
-              <Label className="text-slate-300">Assigned To</Label>
+              <Label className="text-slate-300">Attribuée à</Label>
               <select
                 value={assignedTo}
                 onChange={(e) => setAssignedTo(e.target.value)}
                 className="h-9 w-full rounded-lg border border-slate-700 bg-slate-800 px-2.5 text-sm text-white outline-none focus:border-primary"
               >
-                <option value="">Unassigned</option>
+                <option value="">Non attribuée</option>
                 {profiles.map((p) => (
                   <option key={p.id} value={p.id}>
                     {p.full_name || p.email}
@@ -362,7 +362,7 @@ export function DealForm({
               <Textarea
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                placeholder="Add notes..."
+                placeholder="Ajouter des notes…"
                 className="min-h-[100px] border-slate-700 bg-slate-800 text-white"
               />
             </div>
@@ -370,7 +370,7 @@ export function DealForm({
             {deal && (
               <div className="space-y-2 rounded-lg border border-slate-700 bg-slate-900/50 p-3">
                 <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
-                  Status
+                  Statut
                 </p>
                 <div className="flex gap-2">
                   <Button
@@ -384,7 +384,7 @@ export function DealForm({
                     ) : (
                       <>
                         <Check className="mr-1 h-4 w-4" />
-                        Mark as Won
+                        Marquer gagnée
                       </>
                     )}
                   </Button>
@@ -399,7 +399,7 @@ export function DealForm({
                     ) : (
                       <>
                         <X className="mr-1 h-4 w-4" />
-                        Mark as Lost
+                        Marquer perdue
                       </>
                     )}
                   </Button>
@@ -412,7 +412,7 @@ export function DealForm({
                     disabled={!!statusAction}
                     className="w-full text-slate-400 hover:text-white"
                   >
-                    Reopen deal
+                    Rouvrir l&apos;affaire
                   </Button>
                 )}
               </div>
@@ -426,14 +426,14 @@ export function DealForm({
                 onClick={() => onOpenChange(false)}
                 className="flex-1 border-slate-700 bg-transparent text-slate-300 hover:bg-slate-800"
               >
-                Cancel
+                Annuler
               </Button>
               <Button
                 onClick={handleSave}
                 disabled={saving || !title.trim() || !contactId || !stageId}
                 className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90"
               >
-                {saving ? "Saving..." : deal ? "Save Changes" : "Create Deal"}
+                {saving ? "Enregistrement…" : deal ? "Enregistrer" : "Créer l'affaire"}
               </Button>
             </div>
 
