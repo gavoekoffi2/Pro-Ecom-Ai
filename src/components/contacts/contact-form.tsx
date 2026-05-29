@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { toast } from 'sonner';
 import type { Contact, Tag, ContactTag } from '@/types';
+import { toInternationalDigits } from '@/lib/whatsapp/phone-utils';
 import {
   Dialog,
   DialogContent,
@@ -15,7 +16,6 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Badge } from '@/components/ui/badge';
 import { Loader2 } from 'lucide-react';
 
 interface ContactFormProps {
@@ -79,9 +79,14 @@ export function ContactForm({
     e.preventDefault();
 
     if (!phone.trim()) {
-      toast.error('Phone number is required');
+      toast.error('Le numéro de téléphone est requis');
       return;
     }
+
+    // Normalize to full international digits so locally-typed Togolese
+    // numbers (8 digits) are stored — and later sent to WhatsApp — with
+    // the country code. WhatsApp/Meta rejects numbers without one.
+    const normalizedPhone = toInternationalDigits(phone);
 
     setSaving(true);
 
@@ -90,7 +95,7 @@ export function ContactForm({
         data: { session },
       } = await supabase.auth.getSession();
       const user = session?.user;
-      if (!user) throw new Error('Not authenticated');
+      if (!user) throw new Error('Non authentifié');
 
       let contactId = contact?.id;
 
@@ -99,7 +104,7 @@ export function ContactForm({
           .from('contacts')
           .update({
             name: name.trim() || null,
-            phone: phone.trim(),
+            phone: normalizedPhone,
             email: email.trim() || null,
             company: company.trim() || null,
             updated_at: new Date().toISOString(),
@@ -112,7 +117,7 @@ export function ContactForm({
           .insert({
             user_id: user.id,
             name: name.trim() || null,
-            phone: phone.trim(),
+            phone: normalizedPhone,
             email: email.trim() || null,
             company: company.trim() || null,
           })
@@ -141,11 +146,12 @@ export function ContactForm({
         }
       }
 
-      toast.success(isEdit ? 'Contact updated' : 'Contact created');
+      toast.success(isEdit ? 'Contact mis à jour' : 'Contact créé');
       onOpenChange(false);
       onSaved();
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Failed to save contact';
+      const message =
+        err instanceof Error ? err.message : "Échec de l'enregistrement du contact";
       toast.error(message);
     } finally {
       setSaving(false);
@@ -157,82 +163,83 @@ export function ContactForm({
       <DialogContent className="bg-slate-900 border-slate-700 text-slate-200 sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="text-white">
-            {isEdit ? 'Edit Contact' : 'Add Contact'}
+            {isEdit ? 'Modifier le contact' : 'Ajouter un contact'}
           </DialogTitle>
           <DialogDescription className="text-slate-400">
             {isEdit
-              ? 'Update the contact details below.'
-              : 'Fill in the details to create a new contact.'}
+              ? 'Mettez à jour les informations du contact ci-dessous.'
+              : 'Renseignez les informations pour créer un nouveau contact.'}
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="cf-name" className="text-slate-300">
-              Name
+              Nom
             </Label>
             <Input
               id="cf-name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="John Doe"
+              placeholder="Kossi Adjévi"
               className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-500"
             />
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="cf-phone" className="text-slate-300">
-              Phone <span className="text-red-400">*</span>
+              Téléphone <span className="text-red-400">*</span>
             </Label>
             <Input
               id="cf-phone"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              placeholder="+1 234 567 8900"
+              placeholder="90 12 34 56"
               className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-500"
             />
             <p className="text-xs text-slate-500">
-              Include country code, e.g. +1 for US
+              Numéro togolais (8 chiffres) ou format international. Ex. :
+              90 12 34 56 ou +228 90 12 34 56
             </p>
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="cf-email" className="text-slate-300">
-              Email
+              E-mail
             </Label>
             <Input
               id="cf-email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="john@example.com"
+              placeholder="kossi@exemple.com"
               className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-500"
             />
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="cf-company" className="text-slate-300">
-              Company
+              Entreprise
             </Label>
             <Input
               id="cf-company"
               value={company}
               onChange={(e) => setCompany(e.target.value)}
-              placeholder="Acme Inc."
+              placeholder="Ma Société"
               className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-500"
             />
           </div>
 
           <div className="space-y-2">
-            <Label className="text-slate-300">Tags</Label>
+            <Label className="text-slate-300">Étiquettes</Label>
             {loadingTags ? (
               <div className="flex items-center gap-2 text-slate-500 text-sm">
                 <Loader2 className="size-3 animate-spin" />
-                Loading tags...
+                Chargement des étiquettes…
               </div>
             ) : tags.length === 0 ? (
               <p className="text-xs text-slate-500">
-                No tags available. Create tags in Settings.
+                Aucune étiquette. Créez-en dans Paramètres.
               </p>
             ) : (
               <div className="flex flex-wrap gap-1.5">
@@ -269,7 +276,7 @@ export function ContactForm({
               onClick={() => onOpenChange(false)}
               className="border-slate-700 text-slate-300 hover:bg-slate-800"
             >
-              Cancel
+              Annuler
             </Button>
             <Button
               type="submit"
@@ -277,7 +284,7 @@ export function ContactForm({
               className="bg-primary hover:bg-primary/90 text-primary-foreground"
             >
               {saving && <Loader2 className="size-4 animate-spin" />}
-              {isEdit ? 'Update' : 'Create'}
+              {isEdit ? 'Mettre à jour' : 'Créer'}
             </Button>
           </DialogFooter>
         </form>

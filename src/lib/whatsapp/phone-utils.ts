@@ -1,4 +1,14 @@
 /**
+ * Default country dialing code for the deployment. Togo (+228) — the
+ * product's home market — so locally-typed subscriber numbers (the
+ * 8-digit Togolese format, e.g. "90 12 34 56") get completed to a
+ * full international number automatically. Override per deployment via
+ * NEXT_PUBLIC_DEFAULT_COUNTRY_CODE if you serve another country.
+ */
+export const DEFAULT_COUNTRY_CODE =
+  process.env.NEXT_PUBLIC_DEFAULT_COUNTRY_CODE?.replace(/\D/g, '') || '228'
+
+/**
  * Sanitize phone number for Meta WhatsApp API.
  * Meta requires digits only — no + prefix, no spaces, no dashes.
  * e.g. "+370 63949836" → "37063949836"
@@ -6,6 +16,53 @@
 export function sanitizePhoneForMeta(phone: string): string {
   if (!phone) return ''
   return phone.replace(/\D/g, '')
+}
+
+/**
+ * Complete a phone number to full international digits (no +), applying
+ * the default country code when the user typed only a local subscriber
+ * number. WhatsApp/Meta always needs the country code, but people in
+ * Togo (and across francophone Africa) routinely type just the local
+ * 8-digit number — this bridges that gap so first-time users don't have
+ * to remember "+228".
+ *
+ * Rules, in order:
+ *   - "00…" international access prefix is dropped (the rest carries a CC).
+ *   - already-international numbers (start with the default CC, or are
+ *     long enough to clearly include some other CC) are kept as-is.
+ *   - a leading trunk "0" is stripped, then the default CC is prepended
+ *     to short local numbers.
+ *
+ * e.g. (default CC 228)
+ *   "90 12 34 56"      → "22890123456"
+ *   "+228 90 12 34 56" → "22890123456"
+ *   "0022890123456"    → "22890123456"
+ *   "+233 24 123 4567" → "233241234567"  (kept — foreign CC)
+ */
+export function toInternationalDigits(
+  phone: string,
+  defaultCountryCode: string = DEFAULT_COUNTRY_CODE
+): string {
+  let d = (phone || '').replace(/\D/g, '')
+  if (!d) return ''
+
+  // "00" international access prefix → strip; remainder already has a CC.
+  if (d.startsWith('00')) d = d.slice(2)
+
+  // Already carries the default country code (and enough subscriber
+  // digits to be plausible) — leave it untouched.
+  if (d.startsWith(defaultCountryCode) && d.length >= defaultCountryCode.length + 6) {
+    return d
+  }
+
+  // Drop a domestic trunk "0" before deciding on length.
+  d = d.replace(/^0+/, '')
+
+  // Short enough to be a bare local subscriber number → add the CC.
+  // Longer numbers are assumed to already include some country code.
+  if (d.length <= 9) return defaultCountryCode + d
+
+  return d
 }
 
 /**

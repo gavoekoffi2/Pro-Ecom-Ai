@@ -5,6 +5,7 @@ import { Toaster } from "sonner";
 import "./globals.css";
 import { ThemeProvider } from "@/hooks/use-theme";
 import { DEFAULT_THEME, STORAGE_KEY, THEME_IDS } from "@/lib/themes";
+import { BRAND_NAME, BRAND_DESCRIPTION } from "@/lib/brand";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -13,10 +14,10 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "wacrm",
-    template: "%s — wacrm",
+    default: BRAND_NAME,
+    template: `%s — ${BRAND_NAME}`,
   },
-  description: "Self-hostable CRM template for WhatsApp.",
+  description: BRAND_DESCRIPTION,
   robots: {
     index: false,
     follow: false,
@@ -32,7 +33,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#020617",
+  themeColor: "#0b1f1a",
   colorScheme: "dark",
 };
 
@@ -67,7 +68,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="fr"
       data-theme={DEFAULT_THEME}
       className={`${inter.variable} h-full antialiased`}
     >

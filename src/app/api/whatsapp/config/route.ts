@@ -148,7 +148,7 @@ export async function POST(request: Request) {
     }
 
     // Reject if another user has already claimed this phone_number_id.
-    // wacrm is single-tenant-per-WhatsApp-number — letting two users
+    // Pro WhatsApp PDB is single-tenant-per-WhatsApp-number — letting two users
     // bind the same number causes the webhook's `.single()` lookup to
     // throw PGRST116 ("multiple rows"), silently dropping every
     // inbound message. See issue #136.
@@ -171,7 +171,7 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           error:
-            'This WhatsApp phone number is already linked to another account on this instance. Each phone number can only be connected to one wacrm user.',
+            'Ce numéro WhatsApp est déjà relié à un autre compte sur cette instance. Chaque numéro ne peut être connecté qu\'à un seul compte Pro WhatsApp PDB.',
         },
         { status: 409 }
       )

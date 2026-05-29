@@ -1,17 +1,17 @@
 {
-  "name": "wacrm",
-  "version": "0.2.1",
+  "name": "pro-whatsapp-pdb",
+  "version": "1.0.0",
   "private": true,
-  "description": "Self-hostable CRM template for WhatsApp built on Next.js and Supabase — shared inbox, contacts, sales pipelines, broadcasts, and no-code automations.",
+  "description": "Pro WhatsApp PDB — CRM WhatsApp pour l'Afrique : messagerie partagée, contacts, pipelines de vente, diffusions et automatisations sans code. Construit avec Next.js et Supabase.",
   "license": "MIT",
-  "author": "Arnas Donauskas",
-  "homepage": "https://github.com/ArnasDon/wacrm",
+  "author": "Pro WhatsApp PDB",
+  "homepage": "https://github.com/gavoekoffi2/Pro-Ecom-Ai",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ArnasDon/wacrm.git"
+    "url": "git+https://github.com/gavoekoffi2/Pro-Ecom-Ai.git"
   },
   "bugs": {
-    "url": "https://github.com/ArnasDon/wacrm/issues"
+    "url": "https://github.com/gavoekoffi2/Pro-Ecom-Ai/issues"
   },
   "keywords": [
     "crm",
@@ -21,8 +21,8 @@
     "supabase",
     "automation",
     "broadcast",
-    "self-hosted",
-    "template"
+    "afrique",
+    "togo"
   ],
   "engines": {
     "node": ">=20.0.0"

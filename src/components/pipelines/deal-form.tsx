@@ -11,6 +11,7 @@ import type {
   PipelineStage,
   Profile,
 } from "@/types";
+import { DEFAULT_CURRENCY, CURRENCY_OPTIONS } from "@/lib/format";
 import {
   Sheet,
   SheetContent,
@@ -54,7 +55,7 @@ export function DealForm({
 
   const [title, setTitle] = useState("");
   const [value, setValue] = useState("");
-  const [currency, setCurrency] = useState("USD");
+  const [currency, setCurrency] = useState(DEFAULT_CURRENCY);
   const [contactId, setContactId] = useState("");
   const [stageId, setStageId] = useState("");
   const [assignedTo, setAssignedTo] = useState("");
@@ -81,7 +82,7 @@ export function DealForm({
     if (deal) {
       setTitle(deal.title);
       setValue(String(deal.value ?? ""));
-      setCurrency(deal.currency || "USD");
+      setCurrency(deal.currency || DEFAULT_CURRENCY);
       // contact_id is nullable when the contact has been deleted
       // (migration 004: ON DELETE SET NULL). "" means "no selection".
       setContactId(deal.contact_id ?? "");
@@ -92,7 +93,7 @@ export function DealForm({
     } else {
       setTitle("");
       setValue("");
-      setCurrency("USD");
+      setCurrency(DEFAULT_CURRENCY);
       setContactId("");
       setStageId(defaultStageId || stages[0]?.id || "");
       setAssignedTo("");
@@ -287,7 +288,7 @@ export function DealForm({
 
             <div className="grid grid-cols-[1fr_110px] gap-3">
               <div className="grid gap-2">
-                <Label className="text-slate-300">Value</Label>
+                <Label className="text-slate-300">Montant</Label>
                 <div className="relative">
                   <DollarSign className="absolute left-2 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-500" />
                   <Input
@@ -300,15 +301,17 @@ export function DealForm({
                 </div>
               </div>
               <div className="grid gap-2">
-                <Label className="text-slate-300">Currency</Label>
+                <Label className="text-slate-300">Devise</Label>
                 <select
                   value={currency}
                   onChange={(e) => setCurrency(e.target.value)}
                   className="h-9 w-full rounded-lg border border-slate-700 bg-slate-800 px-2.5 text-sm text-white outline-none focus:border-primary"
                 >
-                  <option value="USD">USD</option>
-                  <option value="EUR">EUR</option>
-                  <option value="GBP">GBP</option>
+                  {CURRENCY_OPTIONS.map((c) => (
+                    <option key={c.code} value={c.code}>
+                      {c.label}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>

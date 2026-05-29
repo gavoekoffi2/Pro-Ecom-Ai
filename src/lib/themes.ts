@@ -8,24 +8,25 @@
  *
  * Adding a new theme is a two-step change:
  *   1. Append the new `html[data-theme="<id>"]` block in globals.css
- *      with every token from an existing theme (use violet as the
+ *      with every token from an existing theme (use whatsapp as the
  *      shape reference).
  *   2. Add an entry below. The order here drives the picker grid.
  */
 
 export const THEME_IDS = [
-  "violet",
+  "whatsapp",
   "emerald",
   "cobalt",
   "amber",
   "rose",
+  "violet",
 ] as const;
 
 export type ThemeId = (typeof THEME_IDS)[number];
 
-export const DEFAULT_THEME: ThemeId = "violet";
+export const DEFAULT_THEME: ThemeId = "whatsapp";
 
-export const STORAGE_KEY = "wacrm.theme";
+export const STORAGE_KEY = "pwpdb.theme";
 
 export interface ThemeMeta {
   id: ThemeId;
@@ -42,34 +43,40 @@ export interface ThemeMeta {
 
 export const THEMES: ReadonlyArray<ThemeMeta> = [
   {
-    id: "violet",
-    name: "Violet",
-    tagline: "The default — confident, slightly playful.",
-    swatch: "oklch(0.526 0.247 293)",
+    id: "whatsapp",
+    name: "WhatsApp",
+    tagline: "Le vert officiel de WhatsApp — l'identité de la messagerie.",
+    swatch: "oklch(0.7 0.17 156)",
   },
   {
     id: "emerald",
-    name: "Emerald",
-    tagline: "Growth-coded, nods at messaging without copying WhatsApp green.",
+    name: "Émeraude",
+    tagline: "Un vert plus doux, orienté croissance.",
     swatch: "oklch(0.62 0.16 162)",
   },
   {
     id: "cobalt",
     name: "Cobalt",
-    tagline: "Clean B2B-SaaS blue — calm and product-y.",
+    tagline: "Bleu SaaS B2B — calme et professionnel.",
     swatch: "oklch(0.585 0.2 254)",
   },
   {
     id: "amber",
-    name: "Amber",
-    tagline: "Warm and friendly — feels good for SMB teams.",
+    name: "Ambre",
+    tagline: "Chaleureux et accueillant — idéal pour les PME.",
     swatch: "oklch(0.745 0.16 65)",
   },
   {
     id: "rose",
     name: "Rose",
-    tagline: "Bold and modern — D2C, creator-economy, lifestyle.",
+    tagline: "Audacieux et moderne — D2C, créateurs, lifestyle.",
     swatch: "oklch(0.645 0.22 16)",
+  },
+  {
+    id: "violet",
+    name: "Violet",
+    tagline: "Le thème d'origine — sûr de lui, un brin ludique.",
+    swatch: "oklch(0.526 0.247 293)",
   },
 ];
 

@@ -1,0 +1,26 @@
+# Netlify configuration for Pro WhatsApp PDB (Next.js 16 + Supabase).
+#
+# Deploy steps (see DEPLOIEMENT.md for the full walkthrough):
+#   1. On Netlify: "Add new site" → "Import from Git" → this repo.
+#   2. Netlify auto-detects Next.js and installs the official runtime
+#      (@netlify/plugin-nextjs) — it turns API routes, the WhatsApp
+#      webhook and server components into serverless functions.
+#   3. Set the environment variables (Site settings → Environment) —
+#      they are listed in .env.local.example. The build needs them.
+#
+# NOTE: never commit real secrets here. Environment variables live in
+# the Netlify dashboard, not in this file.
+
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  # The app requires Node 20+. Pin a current LTS so the build matches
+  # what we test locally.
+  NODE_VERSION = "22"
+
+# Official Next.js runtime. Netlify usually adds this automatically when
+# it detects Next.js; declaring it makes the build reproducible.
+[[plugins]]
+  package = "@netlify/plugin-nextjs"

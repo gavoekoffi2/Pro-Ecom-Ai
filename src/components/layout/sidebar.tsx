@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/use-auth";
 import { useTotalUnread } from "@/hooks/use-total-unread";
+import { BRAND_NAME } from "@/lib/brand";
 import {
   LayoutDashboard,
   MessageSquare,
@@ -44,17 +45,17 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/inbox", label: "Inbox", icon: MessageSquare },
+  { href: "/dashboard", label: "Tableau de bord", icon: LayoutDashboard },
+  { href: "/inbox", label: "Messages", icon: MessageSquare },
   { href: "/contacts", label: "Contacts", icon: Users },
   { href: "/pipelines", label: "Pipelines", icon: GitBranch },
-  { href: "/broadcasts", label: "Broadcasts", icon: Radio },
-  { href: "/automations", label: "Automations", icon: Zap },
-  { href: "/flows", label: "Flows", icon: Workflow, beta: true },
+  { href: "/broadcasts", label: "Diffusions", icon: Radio },
+  { href: "/automations", label: "Automatisations", icon: Zap },
+  { href: "/flows", label: "Flux", icon: Workflow, beta: true },
 ];
 
 const bottomNavItems = [
-  { href: "/settings", label: "Settings", icon: Settings },
+  { href: "/settings", label: "Paramètres", icon: Settings },
 ];
 
 interface SidebarProps {
@@ -128,7 +129,7 @@ export function Sidebar({ open = false, onClose }: SidebarProps) {
               <MessageSquare className="h-4 w-4" />
             </div>
             <span className="text-sm font-semibold text-white">
-              CRM Template for WhatsApp
+              {BRAND_NAME}
             </span>
           </Link>
           <button
@@ -233,7 +234,7 @@ export function Sidebar({ open = false, onClose }: SidebarProps) {
               </Avatar>
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-medium text-white">
-                  {profile?.full_name ?? "User"}
+                  {profile?.full_name ?? "Utilisateur"}
                 </p>
                 <p className="truncate text-xs text-slate-400">
                   {profile?.email ?? ""}
@@ -256,7 +257,7 @@ export function Sidebar({ open = false, onClose }: SidebarProps) {
                 }
               >
                 <User className="size-4" />
-                Profile
+                Profil
               </DropdownMenuItem>
               <DropdownMenuItem
                 render={
@@ -268,7 +269,7 @@ export function Sidebar({ open = false, onClose }: SidebarProps) {
                 }
               >
                 <Settings className="size-4" />
-                Settings
+                Paramètres
               </DropdownMenuItem>
               <DropdownMenuSeparator className="bg-slate-800" />
               <DropdownMenuItem
@@ -276,7 +277,7 @@ export function Sidebar({ open = false, onClose }: SidebarProps) {
                 className="text-slate-200 focus:bg-slate-800 focus:text-white"
               >
                 <LogOut className="size-4" />
-                Sign out
+                Se déconnecter
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

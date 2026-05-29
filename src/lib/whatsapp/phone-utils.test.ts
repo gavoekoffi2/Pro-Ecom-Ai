@@ -1,11 +1,13 @@
 import { describe, expect, it } from "vitest";
 import {
+  DEFAULT_COUNTRY_CODE,
   isRecipientNotAllowedError,
   isValidE164,
   normalizePhone,
   phoneVariants,
   phonesMatch,
   sanitizePhoneForMeta,
+  toInternationalDigits,
 } from "./phone-utils";
 
 describe("sanitizePhoneForMeta", () => {
@@ -133,6 +135,44 @@ describe("phoneVariants", () => {
   it("returns just the original when the number is too short for any CC slice", () => {
     // 1-char input is shorter than all ccLen values; both loops skip.
     expect(phoneVariants("1")).toEqual(["1"]);
+  });
+});
+
+describe("toInternationalDigits", () => {
+  it("defaults to Togo (+228)", () => {
+    expect(DEFAULT_COUNTRY_CODE).toBe("228");
+  });
+
+  it("prepends the default country code to a bare local number", () => {
+    expect(toInternationalDigits("90 12 34 56")).toBe("22890123456");
+    expect(toInternationalDigits("90123456")).toBe("22890123456");
+  });
+
+  it("keeps a number that already carries the default country code", () => {
+    expect(toInternationalDigits("+228 90 12 34 56")).toBe("22890123456");
+    expect(toInternationalDigits("22890123456")).toBe("22890123456");
+  });
+
+  it("drops the 00 international access prefix", () => {
+    expect(toInternationalDigits("0022890123456")).toBe("22890123456");
+  });
+
+  it("strips a domestic trunk 0 before adding the country code", () => {
+    expect(toInternationalDigits("090123456")).toBe("22890123456");
+  });
+
+  it("leaves a foreign country code untouched", () => {
+    // Ghana (+233), 9 subscriber digits → already international.
+    expect(toInternationalDigits("+233 24 123 4567")).toBe("233241234567");
+  });
+
+  it("honors an explicit country-code override", () => {
+    expect(toInternationalDigits("24 123 4567", "233")).toBe("233241234567");
+  });
+
+  it("returns an empty string for falsy input", () => {
+    expect(toInternationalDigits("")).toBe("");
+    expect(toInternationalDigits(undefined as unknown as string)).toBe("");
   });
 });
 
