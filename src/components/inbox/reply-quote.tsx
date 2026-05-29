@@ -41,7 +41,7 @@ export function ReplyQuote({
         <button
           type="button"
           onClick={onDismiss}
-          aria-label="Cancel reply"
+          aria-label="Annuler la réponse"
           className="flex h-6 w-6 shrink-0 items-center justify-center rounded text-slate-400 hover:bg-slate-700 hover:text-white"
         >
           <X className="h-3.5 w-3.5" />
@@ -58,15 +58,15 @@ export function buildReplyPreview(message: Message): string {
     case "image":
       return "[Image]";
     case "video":
-      return "[Video]";
+      return "[Vidéo]";
     case "audio":
       return "[Audio]";
     case "document":
       return "[Document]";
     case "location":
-      return "[Location]";
+      return "[Position]";
     case "template":
-      return "[Template]";
+      return "[Modèle]";
     default:
       return "[Message]";
   }
