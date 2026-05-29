@@ -49,8 +49,8 @@ export function ConversationsChart({ series, loading, range, onRangeChange }: Co
     <section className="flex h-full flex-col rounded-xl border border-slate-800 bg-slate-900">
       <header className="flex items-center justify-between border-b border-slate-800 px-5 py-4">
         <div>
-          <h2 className="text-sm font-semibold text-white">Conversations Over Time</h2>
-          <p className="mt-0.5 text-xs text-slate-500">Daily message volume by direction</p>
+          <h2 className="text-sm font-semibold text-white">Conversations dans le temps</h2>
+          <p className="mt-0.5 text-xs text-slate-500">Volume quotidien de messages par sens</p>
         </div>
         <div className="flex items-center gap-1 rounded-lg bg-slate-800/60 p-1">
           {[7, 30, 90].map((r) => (
@@ -65,7 +65,7 @@ export function ConversationsChart({ series, loading, range, onRangeChange }: Co
                   : 'text-slate-400 hover:text-white',
               )}
             >
-              {r} days
+              {r} jours
             </button>
           ))}
         </div>
@@ -77,8 +77,8 @@ export function ConversationsChart({ series, loading, range, onRangeChange }: Co
         ) : data.every((p) => p.incoming === 0 && p.outgoing === 0) ? (
           <EmptyState
             icon={MessageSquare}
-            title="No message activity in this range"
-            hint="Send or receive messages to start populating this chart."
+            title="Aucune activité sur cette période"
+            hint="Envoyez ou recevez des messages pour alimenter ce graphique."
           />
         ) : (
           <LineSvg data={data} maxY={maxY} ticks={niceTicks} />
@@ -86,8 +86,8 @@ export function ConversationsChart({ series, loading, range, onRangeChange }: Co
       </div>
 
       <footer className="flex items-center gap-4 border-t border-slate-800 px-5 py-3 text-xs text-slate-400">
-        <LegendDot color="#3b82f6" label="Incoming" />
-        <LegendDot color="#7c3aed" label="Outgoing" />
+        <LegendDot color="#3b82f6" label="Entrants" />
+        <LegendDot color="#25D366" label="Sortants" />
       </footer>
     </section>
   )
@@ -195,7 +195,7 @@ function LineSvg({
         viewBox={`0 0 ${VB_W} ${VB_H}`}
         className="h-[240px] w-full"
         role="img"
-        aria-label="Conversations per day"
+        aria-label="Conversations par jour"
       >
         {/* Y-axis gridlines + labels */}
         {ticks.map((t) => {
@@ -242,7 +242,7 @@ function LineSvg({
         <path
           d={outgoingPath}
           fill="none"
-          stroke="#7c3aed"
+          stroke="#25D366"
           strokeWidth={2}
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -269,7 +269,7 @@ function LineSvg({
               strokeDasharray="3 3"
             />
             <circle cx={hoverX} cy={yFor(data[hover.idx].incoming)} r={3.5} fill="#3b82f6" />
-            <circle cx={hoverX} cy={yFor(data[hover.idx].outgoing)} r={3.5} fill="#7c3aed" />
+            <circle cx={hoverX} cy={yFor(data[hover.idx].outgoing)} r={3.5} fill="#25D366" />
           </g>
         )}
       </svg>
@@ -287,11 +287,11 @@ function LineSvg({
           <div className="mt-1 flex flex-col gap-0.5">
             <span className="flex items-center gap-1.5 text-blue-300">
               <span className="inline-block h-1.5 w-1.5 rounded-full bg-blue-500" />
-              {hovered.incoming} incoming
+              {hovered.incoming} entrants
             </span>
             <span className="flex items-center gap-1.5 text-primary">
               <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary" />
-              {hovered.outgoing} outgoing
+              {hovered.outgoing} sortants
             </span>
           </div>
         </div>
@@ -314,13 +314,13 @@ function shortDayLabel(key: string): string {
   // appended time avoids timezone-shift surprises across midnight.
   const [y, m, d] = key.split('-').map(Number)
   const date = new Date(y, m - 1, d)
-  return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
+  return date.toLocaleDateString('fr-FR', { month: 'short', day: 'numeric' })
 }
 
 function longDayLabel(key: string): string {
   const [y, m, d] = key.split('-').map(Number)
   const date = new Date(y, m - 1, d)
-  return date.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })
+  return date.toLocaleDateString('fr-FR', { weekday: 'short', month: 'short', day: 'numeric' })
 }
 
 /**

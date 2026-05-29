@@ -29,23 +29,23 @@ export function ResponseTimeChart({
       <header className="flex items-center justify-between border-b border-slate-800 px-5 py-4">
         <div>
           <h2 className="text-sm font-semibold text-white">
-            Average First Response Time
+            Temps de première réponse moyen
           </h2>
           <p className="mt-0.5 text-xs text-slate-500">
-            Minutes to reply to a customer&apos;s first unreplied message, by
-            weekday
+            Minutes pour répondre au premier message sans réponse d&apos;un
+            client, par jour de la semaine
           </p>
         </div>
         {data && (data.thisWeekAvg != null || data.lastWeekAvg != null) && (
           <div className="text-right text-xs">
             <div className="text-slate-400">
-              This week:{' '}
+              Cette semaine :{' '}
               <span className="font-medium text-white tabular-nums">
                 {fmt(data.thisWeekAvg)}
               </span>
             </div>
             <div className="text-slate-500">
-              Last week:{' '}
+              Semaine dernière :{' '}
               <span className="tabular-nums">{fmt(data.lastWeekAvg)}</span>
             </div>
           </div>
@@ -58,8 +58,8 @@ export function ResponseTimeChart({
         ) : !hasData ? (
           <EmptyState
             icon={Clock}
-            title="No replies recorded yet"
-            hint="This chart fills in as you reply to customer messages."
+            title="Aucune réponse enregistrée"
+            hint="Ce graphique se remplit au fur et à mesure que vous répondez aux clients."
           />
         ) : (
           <Bars data={data} thresholdMinutes={thresholdMinutes} />
@@ -138,7 +138,7 @@ function Bars({
             textAnchor="end"
             className="fill-rose-300 text-[10px]"
           >
-            target {thresholdMinutes}m
+            cible {thresholdMinutes} min
           </text>
         </g>
       )}
@@ -158,13 +158,13 @@ function Bars({
               width={barW}
               height={muted ? 2 : Math.max(1, h)}
               rx={4}
-              fill={muted ? 'rgb(51 65 85)' : '#7c3aed'}
+              fill={muted ? 'rgb(51 65 85)' : '#25D366'}
               opacity={muted ? 0.6 : 1}
             >
               <title>
-                {DOW_SHORT_MON_FIRST[i]}:{' '}
-                {b.avgMinutes == null ? 'no samples' : `${b.avgMinutes.toFixed(1)} min avg`}
-                {b.samples > 0 ? ` (${b.samples} sample${b.samples === 1 ? '' : 's'})` : ''}
+                {DOW_SHORT_MON_FIRST[i]} :{' '}
+                {b.avgMinutes == null ? 'aucun échantillon' : `${b.avgMinutes.toFixed(1)} min en moy.`}
+                {b.samples > 0 ? ` (${b.samples} échantillon${b.samples === 1 ? '' : 's'})` : ''}
               </title>
             </rect>
             <text
