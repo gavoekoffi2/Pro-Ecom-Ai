@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { BRAND_NAME } from "@/lib/brand";
@@ -24,6 +25,7 @@ export default function SignupPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const router = useRouter();
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,7 +47,7 @@ export default function SignupPage() {
     // Supabase when build-time env vars are absent.
     const supabase = createClient();
 
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -58,6 +60,15 @@ export default function SignupPage() {
     if (error) {
       setError(error.message);
       setLoading(false);
+      return;
+    }
+
+    // Si la confirmation par e-mail est désactivée (auto-confirmation),
+    // Supabase renvoie directement une session : on connecte l'utilisateur
+    // et on l'emmène au tableau de bord, sans écran « vérifiez votre e-mail »
+    // trompeur. Sinon (confirmation requise), on affiche l'écran d'e-mail.
+    if (data.session) {
+      router.push("/dashboard");
       return;
     }
 
