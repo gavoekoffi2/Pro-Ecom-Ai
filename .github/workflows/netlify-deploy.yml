@@ -1,0 +1,50 @@
+# Déploiement continu vers Netlify.
+#
+# À chaque "push" sur la branche de production, ce workflow :
+#   1. récupère le code,
+#   2. installe les dépendances,
+#   3. lance le build Next.js + le déploiement Netlify en production.
+#
+# Le build récupère automatiquement les variables d'environnement
+# définies sur le site Netlify (clés Supabase, etc.) — rien à dupliquer ici.
+#
+# DEUX SECRETS À AJOUTER UNE SEULE FOIS dans GitHub :
+#   Repo → Settings → Secrets and variables → Actions → New repository secret
+#     - NETLIFY_AUTH_TOKEN : un jeton Netlify (User settings → Applications)
+#     - NETLIFY_SITE_ID    : 3430d8c5-2a28-4316-8626-f834d1922e4b
+name: Déploiement Netlify
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - claude/eloquent-edison-sMiRZ
+  workflow_dispatch: {}
+
+# Un seul déploiement de prod à la fois ; on annule le précédent s'il tourne.
+concurrency:
+  group: netlify-production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+
+      - name: Configurer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Installer les dépendances
+        run: npm ci
+
+      - name: Build + déploiement Netlify (production)
+        run: npx netlify-cli@26 deploy --build --prod --message "Auto-deploy ${{ github.ref_name }} ${{ github.sha }}"
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
