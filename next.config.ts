@@ -3,10 +3,12 @@ import type { NextConfig } from "next";
 /**
  * Baseline security headers applied to every response.
  *
- * CSP ships as `Content-Security-Policy-Report-Only` so the browser
- * surfaces violations in the console without blocking anything — once
- * we have confidence nothing legit trips it (two deploys, a pass on
- * every route), flip the key to `Content-Security-Policy` to enforce.
+ * CSP is ENFORCED (`Content-Security-Policy`). Directives stay
+ * permissive where Next requires it (inline hydration needs
+ * 'unsafe-inline'/'unsafe-eval'); everything else is locked to 'self'
+ * plus Supabase. If you add a third-party origin (analytics, CDN,
+ * external API called from the browser), add it to the matching
+ * directive below or it will be blocked.
  *
  * The rest of the headers are straight blocks, safe to enforce today:
  *   - HSTS: only meaningful on HTTPS (no-op on http://localhost).
@@ -29,7 +31,11 @@ const SECURITY_HEADERS = [
     value: "camera=(), microphone=(), geolocation=(), payment=(), usb=()",
   },
   {
-    key: "Content-Security-Policy-Report-Only",
+    // Enforced CSP. Directives kept permissive enough for Next's inline
+    // hydration script ('unsafe-inline'/'unsafe-eval'), self-hosted
+    // next/font, Supabase REST + realtime, and pasteable https avatar
+    // URLs — verified against the app's actual runtime origins.
+    key: "Content-Security-Policy",
     value: [
       "default-src 'self'",
       // Next.js needs 'unsafe-inline' for its inline hydration script

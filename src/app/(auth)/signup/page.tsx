@@ -36,8 +36,8 @@ export default function SignupPage() {
       return;
     }
 
-    if (password.length < 6) {
-      setError("Le mot de passe doit contenir au moins 6 caractères");
+    if (password.length < 8) {
+      setError("Le mot de passe doit contenir au moins 8 caractères");
       return;
     }
 
@@ -165,7 +165,7 @@ export default function SignupPage() {
               <Input
                 id="password"
                 type="password"
-                placeholder="Au moins 6 caractères"
+                placeholder="Au moins 8 caractères"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required

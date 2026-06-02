@@ -9,7 +9,14 @@ import {
   ArrowRight,
   Check,
 } from "lucide-react";
+import type { Metadata } from "next";
 import { BRAND_NAME, BRAND_TAGLINE } from "@/lib/brand";
+
+// La landing est la seule page publique : on l'autorise à l'indexation,
+// alors que le reste de l'app reste en noindex (layout racine + dashboard).
+export const metadata: Metadata = {
+  robots: { index: true, follow: true },
+};
 
 // Page d'accueil publique (landing). Aucune dépendance Supabase — elle
 // s'affiche pour tout le monde, connecté ou non. Le middleware ne protège
